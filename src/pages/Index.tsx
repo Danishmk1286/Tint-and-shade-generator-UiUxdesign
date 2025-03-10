@@ -6,8 +6,8 @@ import Header from '@/components/Header';
 import ColorPicker from '@/components/ColorPicker';
 import VariantSlider from '@/components/VariantSlider';
 import ColorDisplay from '@/components/ColorDisplay';
+import FAQSection from '@/components/FAQSection';
 import { Separator } from '@/components/ui/separator';
-import { ArrowRight } from 'lucide-react';
 
 const MAX_VARIANTS = 10;
 
@@ -75,6 +75,8 @@ const Index = () => {
               shadeCount={shadeCount}
             />
           </motion.section>
+
+          <FAQSection />
         </main>
         
         <motion.footer

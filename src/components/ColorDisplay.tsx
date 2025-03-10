@@ -3,6 +3,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import ColorCard from './ColorCard';
+import ColorFormats from './ColorFormats';
 import { generateTints, generateShades, convertColor } from '@/utils/colorUtils';
 
 interface ColorDisplayProps {
@@ -27,6 +28,12 @@ const ColorDisplay: React.FC<ColorDisplayProps> = ({
   
   return (
     <div className={cn('space-y-6', className)}>
+      {/* Color formats display */}
+      <div className="space-y-2">
+        <h3 className="text-lg font-medium">Color Formats</h3>
+        <ColorFormats color={baseColor} />
+      </div>
+      
       {/* Base color */}
       <div className="space-y-2">
         <h3 className="text-lg font-medium">Your Color</h3>
@@ -47,7 +54,7 @@ const ColorDisplay: React.FC<ColorDisplayProps> = ({
           {tintCount > 0 && (
             <div className="space-y-2">
               <h3 className="text-lg font-medium">Tints</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
                 {tints.map((color, index) => (
                   <ColorCard 
                     key={`tint-${index}`} 
@@ -65,7 +72,7 @@ const ColorDisplay: React.FC<ColorDisplayProps> = ({
           {shadeCount > 0 && (
             <div className="space-y-2">
               <h3 className="text-lg font-medium">Shades</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3">
                 {shades.map((color, index) => (
                   <ColorCard 
                     key={`shade-${index}`} 

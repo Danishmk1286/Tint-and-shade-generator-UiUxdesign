@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -31,7 +32,8 @@ const ColorCard: React.FC<ColorCardProps> = ({ color, index, type, delay = 0 }) 
     navigator.clipboard.writeText(formattedColor);
     setCopied(true);
     
-    toast('Color copied', {
+    toast({
+      title: 'Color copied',
       description: `${formattedColor} has been copied to clipboard.`,
       duration: 2000,
     });
@@ -40,48 +42,45 @@ const ColorCard: React.FC<ColorCardProps> = ({ color, index, type, delay = 0 }) 
   };
   
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, delay: delay * 0.05 }}
-      className={cn(
-        'relative group h-24 sm:h-32 rounded-lg overflow-hidden transition-all duration-300',
-        'hover:scale-105 hover:shadow-lg focus-within:scale-105 focus-within:shadow-lg',
-        type === 'base' && 'col-span-2 h-36 sm:h-48 sm:col-span-2'
-      )}
-      style={{ backgroundColor: color }}
-      onClick={toggleFormat}
-      tabIndex={0}
-      role="button"
-      aria-label={`${type} color ${formattedColor}`}
-    >
-      <div 
+    <div className="flex flex-col items-center">
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3, delay: delay * 0.05 }}
         className={cn(
-          'absolute inset-0 opacity-0 group-hover:opacity-100 group-focus:opacity-100',
-          'transition-opacity duration-200 flex items-center justify-center'
+          'relative group h-16 sm:h-24 rounded-lg overflow-hidden transition-all duration-300 w-full',
+          'hover:scale-105 hover:shadow-lg focus-within:scale-105 focus-within:shadow-lg',
+          type === 'base' && 'h-24 sm:h-32'
         )}
+        style={{ backgroundColor: color }}
+        onClick={toggleFormat}
+        tabIndex={0}
+        role="button"
+        aria-label={`${type} color ${formattedColor}`}
       >
-        <button
-          onClick={copyToClipboard}
+        <div 
           className={cn(
-            'p-2 rounded-full',
-            isLight ? 'bg-black/10 text-black' : 'bg-white/10 text-white'
+            'absolute inset-0 opacity-0 group-hover:opacity-100 group-focus:opacity-100',
+            'transition-opacity duration-200 flex items-center justify-center'
           )}
-          aria-label="Copy color code"
         >
-          {copied ? <Check size={20} /> : <Copy size={20} />}
-        </button>
-      </div>
+          <button
+            onClick={copyToClipboard}
+            className={cn(
+              'p-2 rounded-full',
+              isLight ? 'bg-black/10 text-black' : 'bg-white/10 text-white'
+            )}
+            aria-label="Copy color code"
+          >
+            {copied ? <Check size={18} /> : <Copy size={18} />}
+          </button>
+        </div>
+      </motion.div>
       
       <div 
-        className={cn(
-          'absolute inset-x-0 bottom-0 p-3 text-xs sm:text-sm font-medium',
-          isLight ? 'text-gray-800' : 'text-white'
-        )}
+        className="text-xs mt-1 font-medium text-center"
       >
-        <p 
-          className="truncate transition-all duration-200 transform"
-        >
+        <p className="truncate max-w-full">
           {formattedColor}
         </p>
         {type !== 'base' && (
@@ -90,7 +89,7 @@ const ColorCard: React.FC<ColorCardProps> = ({ color, index, type, delay = 0 }) 
           </p>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 };
 
