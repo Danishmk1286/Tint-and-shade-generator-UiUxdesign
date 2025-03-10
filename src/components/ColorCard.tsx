@@ -1,8 +1,7 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { toast } from '@/components/ui/sonner';
+import { toast } from '@/hooks/use-toast';
 import { convertColor, isColorLight } from '@/utils/colorUtils';
 import { Copy, Check } from 'lucide-react';
 
@@ -20,7 +19,6 @@ const ColorCard: React.FC<ColorCardProps> = ({ color, index, type, delay = 0 }) 
   const formattedColor = convertColor(color, format);
   const isLight = isColorLight(color);
   
-  // Rotate through color formats on click
   const toggleFormat = () => {
     const formats: ('hex' | 'rgb' | 'hsl')[] = ['hex', 'rgb', 'hsl'];
     const currentIndex = formats.indexOf(format);
@@ -28,7 +26,6 @@ const ColorCard: React.FC<ColorCardProps> = ({ color, index, type, delay = 0 }) 
     setFormat(formats[nextIndex]);
   };
   
-  // Copy color code to clipboard
   const copyToClipboard = (e: React.MouseEvent) => {
     e.stopPropagation();
     navigator.clipboard.writeText(formattedColor);
