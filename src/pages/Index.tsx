@@ -13,8 +13,8 @@ const MAX_VARIANTS = 10;
 
 const Index = () => {
   const [baseColor, setBaseColor] = useState('#3b82f6');
-  const [tintCount, setTintCount] = useState(3);
-  const [shadeCount, setShadeCount] = useState(3);
+  const [tintCount, setTintCount] = useState(10);
+  const [shadeCount, setShadeCount] = useState(10);
 
   return (
     <div className="min-h-screen bg-background text-foreground antialiased">
@@ -86,10 +86,10 @@ const Index = () => {
           className="text-center text-sm text-muted-foreground pt-6 border-t"
         >
           <p>
-            Click on any color to cycle through HEX, RGB, and HSL formats.
+            Hover on any color to see the code format, click to copy to clipboard.
           </p>
           <p className="mt-1">
-            Click the copy icon to copy the color code to your clipboard.
+            Use the format buttons to switch between HEX, RGB, and HSL display modes.
           </p>
         </motion.footer>
       </div>
