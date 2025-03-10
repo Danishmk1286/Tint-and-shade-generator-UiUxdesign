@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import ColorCard from './ColorCard';
-import ColorFormats from './ColorFormats';
 import { generateTints, generateShades, convertColor } from '@/utils/colorUtils';
 import { Button } from './ui/button';
 
@@ -37,26 +36,23 @@ const ColorDisplay: React.FC<ColorDisplayProps> = ({
   };
   
   return (
-    <div className={cn('space-y-6', className)}>
-      {/* Color formats display */}
-      <div className="space-y-2">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-medium">Color Formats</h3>
-          <div className="flex items-center space-x-2">
-            {(['hex', 'rgb', 'hsl'] as const).map((format) => (
-              <Button
-                key={format}
-                variant={activeFormat === format ? "default" : "outline"}
-                size="sm"
-                onClick={() => handleFormatChange(format)}
-                className="transition-all duration-200 uppercase text-xs font-medium"
-              >
-                {format}
-              </Button>
-            ))}
-          </div>
-        </div>
-        <ColorFormats color={baseColor} />
+    <div className={cn('space-y-8', className)}>
+      {/* Format buttons */}
+      <div className="flex items-center justify-center space-x-2 mb-6">
+        {(['hex', 'rgb', 'hsl'] as const).map((format) => (
+          <Button
+            key={format}
+            variant={activeFormat === format ? "default" : "outline"}
+            size="sm"
+            onClick={() => handleFormatChange(format)}
+            className={cn(
+              "transition-all duration-300 uppercase text-xs font-medium",
+              activeFormat === format ? "shadow-md" : ""
+            )}
+          >
+            {format}
+          </Button>
+        ))}
       </div>
       
       {/* Variants */}
@@ -69,9 +65,9 @@ const ColorDisplay: React.FC<ColorDisplayProps> = ({
         >
           {/* Tints */}
           {tintCount > 0 && (
-            <div className="space-y-2">
+            <div className="space-y-4">
               <h3 className="text-lg font-medium">Tints</h3>
-              <div className="grid grid-cols-5 sm:grid-cols-5 md:grid-cols-10 gap-3">
+              <div className="grid grid-cols-5 md:grid-cols-10 gap-4">
                 {tints.map((color, index) => (
                   <ColorCard 
                     key={`tint-${index}`} 
@@ -89,9 +85,9 @@ const ColorDisplay: React.FC<ColorDisplayProps> = ({
           
           {/* Shades */}
           {shadeCount > 0 && (
-            <div className="space-y-2">
+            <div className="space-y-4">
               <h3 className="text-lg font-medium">Shades</h3>
-              <div className="grid grid-cols-5 sm:grid-cols-5 md:grid-cols-10 gap-3">
+              <div className="grid grid-cols-5 md:grid-cols-10 gap-4">
                 {shades.map((color, index) => (
                   <ColorCard 
                     key={`shade-${index}`} 

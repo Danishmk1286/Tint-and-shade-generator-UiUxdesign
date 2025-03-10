@@ -23,7 +23,7 @@ const Index = () => {
       <div className="container max-w-5xl mx-auto px-4 py-12 sm:py-16 md:py-24 space-y-12">
         <Header />
         
-        <main className="space-y-12">
+        <main className="space-y-16">
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
