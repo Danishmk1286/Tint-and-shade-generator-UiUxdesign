@@ -2,13 +2,7 @@
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/3c7010a9-ef8c-4188-85e3-f45c52cb9ed5
-
-## How can I edit this code?
-
 There are several ways of editing your application.
-
-**Use Lovable**
 
 Simply visit the [Lovable Project](https://lovable.dev/projects/3c7010a9-ef8c-4188-85e3-f45c52cb9ed5) and start prompting.
 
@@ -66,4 +60,4 @@ Simply open [Lovable](https://lovable.dev/projects/3c7010a9-ef8c-4188-85e3-f45c5
 
 ## I want to use a custom domain - is that possible?
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify.
