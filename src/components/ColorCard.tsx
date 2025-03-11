@@ -92,9 +92,16 @@ const ColorCard: React.FC<ColorCardProps> = ({
             {weight}
           </p>
         )}
-        <div className="font-mono text-[11px] sm:text-xs whitespace-nowrap overflow-hidden text-ellipsis px-1 max-w-full">
-          {formattedColor}
-        </div>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div className="font-mono text-[11px] sm:text-xs whitespace-nowrap overflow-hidden text-ellipsis px-1 max-w-full cursor-pointer">
+              {formattedColor}
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{formattedColor}</p>
+          </TooltipContent>
+        </Tooltip>
       </div>
     </div>
   );
