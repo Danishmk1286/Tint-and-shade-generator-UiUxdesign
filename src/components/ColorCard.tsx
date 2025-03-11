@@ -35,9 +35,9 @@ const ColorCard: React.FC<ColorCardProps> = ({
     navigator.clipboard.writeText(formattedColor);
     setCopied(true);
     
-    toast({
-      title: 'Color copied',
-      description: `${formattedColor} has been copied to clipboard.`,
+    // Fix the toast structure to match sonner's API
+    toast(`${formattedColor} has been copied to clipboard.`, {
+      description: 'Color copied',
       duration: 2000,
     });
     
