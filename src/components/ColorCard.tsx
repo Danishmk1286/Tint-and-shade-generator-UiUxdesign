@@ -53,7 +53,7 @@ const ColorCard: React.FC<ColorCardProps> = ({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: delay * 0.05 }}
               className={cn(
-                'relative group h-20 sm:h-24 rounded-lg overflow-hidden transition-all duration-300 w-full',
+                'relative group h-16 sm:h-20 md:h-24 rounded-lg overflow-hidden transition-all duration-300 w-full',
                 'hover:scale-105 hover:shadow-lg focus-within:scale-105 focus-within:shadow-lg'
               )}
               style={{ backgroundColor: color }}
@@ -92,7 +92,7 @@ const ColorCard: React.FC<ColorCardProps> = ({
             {weight}
           </p>
         )}
-        <div className="font-mono text-[11px] sm:text-xs break-all px-1">
+        <div className="font-mono text-[11px] sm:text-xs whitespace-nowrap overflow-hidden text-ellipsis px-1 max-w-full">
           {formattedColor}
         </div>
       </div>
