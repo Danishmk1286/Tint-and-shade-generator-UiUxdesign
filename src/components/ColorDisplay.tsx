@@ -69,7 +69,7 @@ const ColorDisplay: React.FC<ColorDisplayProps> = ({
           {/* Tints */}
           {tintCount > 0 && (
             <div className="space-y-4">
-              <h3 className="text-lg font-medium">Tints</h3>
+              <h3 className="text-xl font-semibold">Tints</h3>
               <div className="grid grid-cols-5 md:grid-cols-10 gap-4">
                 {tints.map((color, index) => (
                   <ColorCard 
@@ -89,7 +89,7 @@ const ColorDisplay: React.FC<ColorDisplayProps> = ({
           {/* Shades */}
           {shadeCount > 0 && (
             <div className="space-y-4">
-              <h3 className="text-lg font-medium">Shades</h3>
+              <h3 className="text-xl font-semibold">Shades</h3>
               <div className="grid grid-cols-5 md:grid-cols-10 gap-4">
                 {shades.map((color, index) => (
                   <ColorCard 

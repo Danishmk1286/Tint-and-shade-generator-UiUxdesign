@@ -86,15 +86,15 @@ const ColorCard: React.FC<ColorCardProps> = ({
         </Tooltip>
       </TooltipProvider>
       
-      <div className="text-xs mt-1 font-medium text-center w-full">
+      <div className="text-xs mt-2 font-medium text-center w-full">
         {weight && (
-          <p className="text-xs opacity-70 mb-0.5">
+          <p className="text-sm opacity-70 mb-1">
             {weight}
           </p>
         )}
-        <p className="truncate max-w-full text-[10px] font-mono">
+        <div className="font-mono text-[11px] sm:text-xs break-all px-1">
           {formattedColor}
-        </p>
+        </div>
       </div>
     </div>
   );
