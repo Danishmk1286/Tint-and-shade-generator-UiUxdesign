@@ -38,17 +38,17 @@ const ColorDisplay: React.FC<ColorDisplayProps> = ({
   return (
     <div className={cn('space-y-8', className)}>
       {/* Format selector with heading */}
-      <div className="flex items-center justify-center space-x-4 mb-6">
+      <div className="flex items-center justify-center md:justify-start space-x-4 mb-6">
         <span className="text-base font-medium mr-2">Color Format:</span>
         <div className="flex items-center space-x-3">
           {(['hex', 'rgb', 'hsl'] as const).map((format) => (
             <Button
               key={format}
               variant={activeFormat === format ? "default" : "outline"}
-              size="default"
+              size="lg"
               onClick={() => handleFormatChange(format)}
               className={cn(
-                "transition-all duration-300 uppercase text-sm font-medium min-w-[80px]",
+                "transition-all duration-300 uppercase text-sm font-medium min-w-[90px]",
                 activeFormat === format ? "shadow-md" : ""
               )}
             >

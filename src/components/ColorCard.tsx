@@ -26,7 +26,7 @@ const ColorCard: React.FC<ColorCardProps> = ({
 }) => {
   const [copied, setCopied] = React.useState(false);
   
-  // Format the color and fix to 2 decimal places for HSL and RGB
+  // Format the color based on requested format
   const formattedColor = formatColorValue(color, format);
   const isLight = isColorLight(color);
   
@@ -35,7 +35,6 @@ const ColorCard: React.FC<ColorCardProps> = ({
     navigator.clipboard.writeText(formattedColor);
     setCopied(true);
     
-    // Fix the toast structure to match sonner's API
     toast(`${formattedColor} has been copied to clipboard.`, {
       description: 'Color copied',
       duration: 2000,
@@ -54,7 +53,7 @@ const ColorCard: React.FC<ColorCardProps> = ({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: delay * 0.05 }}
               className={cn(
-                'relative group h-16 sm:h-20 rounded-lg overflow-hidden transition-all duration-300 w-full',
+                'relative group h-20 sm:h-24 rounded-lg overflow-hidden transition-all duration-300 w-full',
                 'hover:scale-105 hover:shadow-lg focus-within:scale-105 focus-within:shadow-lg'
               )}
               style={{ backgroundColor: color }}
@@ -103,26 +102,32 @@ const ColorCard: React.FC<ColorCardProps> = ({
 
 // Helper function to format color values with fixed decimal places
 function formatColorValue(color: string, format: 'hex' | 'rgb' | 'hsl'): string {
-  const formattedColor = convertColor(color, format);
-  
-  if (format === 'hex') {
+  try {
+    const formattedColor = convertColor(color, format);
+    
+    if (format === 'hex') {
+      return formattedColor;
+    }
+    
+    // For RGB format, fix decimal places
+    if (format === 'rgb') {
+      return formattedColor.replace(/(\d+\.\d{3,})/g, (match) => parseFloat(match).toFixed(2));
+    }
+    
+    // For HSL format, fix decimal places
+    if (format === 'hsl') {
+      return formattedColor.replace(/(\d+\.\d{3,}%)/g, (match) => {
+        const value = parseFloat(match);
+        return value.toFixed(2) + '%';
+      });
+    }
+    
     return formattedColor;
+  } catch (error) {
+    console.error("Error formatting color:", error);
+    // Return the original color if there's an error
+    return color;
   }
-  
-  // For RGB format, fix decimal places
-  if (format === 'rgb') {
-    return formattedColor.replace(/(\d+\.\d{3,})/g, (match) => parseFloat(match).toFixed(2));
-  }
-  
-  // For HSL format, fix decimal places
-  if (format === 'hsl') {
-    return formattedColor.replace(/(\d+\.\d{3,}%)/g, (match) => {
-      const value = parseFloat(match);
-      return value.toFixed(2) + '%';
-    });
-  }
-  
-  return formattedColor;
 }
 
 export default ColorCard;

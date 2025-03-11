@@ -114,94 +114,105 @@ export function generateShades(hex: string, count: number): string[] {
  * Converts a color to a different format
  */
 export function convertColor(color: string, format: 'hex' | 'rgb' | 'hsl'): string {
-  // Handle HSL format
-  if (color.startsWith('hsl')) {
-    const matches = color.match(/hsl\((\d+),\s*(\d+)%,\s*(\d+)%\)/i) || 
-                    color.match(/hsl\((\d+)\s+(\d+)%\s+(\d+)%\)/i);
-    
-    if (!matches) {
-      return color;
-    }
-    
-    const h = parseInt(matches[1]);
-    const s = parseInt(matches[2]) / 100;
-    const l = parseInt(matches[3]) / 100;
-    
-    if (format === 'hsl') {
-      return `hsl(${h}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`;
-    }
-    
-    let r, g, b;
+  try {
+    // Handle HSL format
+    if (color.startsWith('hsl')) {
+      // Improved HSL regex to catch different HSL formats
+      const matches = color.match(/hsl\((\d+),\s*(\d+)%,\s*(\d+\.?\d*)%\)/i) || 
+                      color.match(/hsl\((\d+)\s+(\d+)%\s+(\d+\.?\d*)%\)/i) ||
+                      color.match(/hsl\((\d+),\s*(\d+\.?\d*)%,\s*(\d+\.?\d*)%\)/i);
+      
+      if (!matches) {
+        console.warn("HSL format not recognized:", color);
+        return color;
+      }
+      
+      const h = parseInt(matches[1]);
+      const s = parseFloat(matches[2]) / 100;
+      const l = parseFloat(matches[3]) / 100;
+      
+      if (format === 'hsl') {
+        return `hsl(${h}, ${(s * 100).toFixed(2)}%, ${(l * 100).toFixed(2)}%)`;
+      }
+      
+      let r, g, b;
 
-    if (s === 0) {
-      r = g = b = l;
-    } else {
-      const hueToRgb = (p: number, q: number, t: number) => {
-        if (t < 0) t += 1;
-        if (t > 1) t -= 1;
-        if (t < 1/6) return p + (q - p) * 6 * t;
-        if (t < 1/2) return q;
-        if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
-        return p;
-      };
+      if (s === 0) {
+        r = g = b = l; // achromatic
+      } else {
+        const hueToRgb = (p: number, q: number, t: number) => {
+          if (t < 0) t += 1;
+          if (t > 1) t -= 1;
+          if (t < 1/6) return p + (q - p) * 6 * t;
+          if (t < 1/2) return q;
+          if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+          return p;
+        };
 
-      const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-      const p = 2 * l - q;
+        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        const p = 2 * l - q;
 
-      r = hueToRgb(p, q, h / 360 + 1/3);
-      g = hueToRgb(p, q, h / 360);
-      b = hueToRgb(p, q, h / 360 - 1/3);
+        r = hueToRgb(p, q, h / 360 + 1/3);
+        g = hueToRgb(p, q, h / 360);
+        b = hueToRgb(p, q, h / 360 - 1/3);
+      }
+      
+      r = Math.min(255, Math.max(0, Math.round(r * 255)));
+      g = Math.min(255, Math.max(0, Math.round(g * 255)));
+      b = Math.min(255, Math.max(0, Math.round(b * 255)));
+      
+      if (format === 'rgb') {
+        return `rgb(${r}, ${g}, ${b})`;
+      } else {
+        return rgbToHex(r, g, b);
+      }
     }
     
-    r = Math.round(r * 255);
-    g = Math.round(g * 255);
-    b = Math.round(b * 255);
-    
-    if (format === 'rgb') {
-      return `rgb(${r}, ${g}, ${b})`;
-    } else {
-      return rgbToHex(r, g, b);
+    // Handle hex format
+    if (color.startsWith('#')) {
+      const { r, g, b } = hexToRgb(color);
+      
+      if (format === 'hex') {
+        return color;
+      } else if (format === 'rgb') {
+        return `rgb(${r}, ${g}, ${b})`;
+      } else {
+        const { h, s, l } = rgbToHsl(r, g, b);
+        return `hsl(${h}, ${s}%, ${l}%)`;
+      }
     }
+    
+    // Handle RGB format
+    if (color.startsWith('rgb')) {
+      const matches = color.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/i) || 
+                     color.match(/rgb\((\d+)\s+(\d+)\s+(\d+)\)/i);
+      
+      if (!matches) {
+        console.warn("RGB format not recognized:", color);
+        return color;
+      }
+      
+      const r = parseInt(matches[1]);
+      const g = parseInt(matches[2]);
+      const b = parseInt(matches[3]);
+      
+      if (format === 'rgb') {
+        return color;
+      } else if (format === 'hex') {
+        return rgbToHex(r, g, b);
+      } else {
+        const { h, s, l } = rgbToHsl(r, g, b);
+        return `hsl(${h}, ${s}%, ${l}%)`;
+      }
+    }
+    
+    // If we couldn't identify the color format, return the original
+    console.warn("Unknown color format:", color);
+    return color;
+  } catch (error) {
+    console.error("Error converting color:", error);
+    return color;
   }
-  
-  // Handle hex format
-  if (color.startsWith('#')) {
-    const { r, g, b } = hexToRgb(color);
-    
-    if (format === 'hex') {
-      return color;
-    } else if (format === 'rgb') {
-      return `rgb(${r}, ${g}, ${b})`;
-    } else {
-      const { h, s, l } = rgbToHsl(r, g, b);
-      return `hsl(${h}, ${s}%, ${l}%)`;
-    }
-  }
-  
-  // Handle RGB format
-  if (color.startsWith('rgb')) {
-    const matches = color.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/i) || 
-                   color.match(/rgb\((\d+)\s+(\d+)\s+(\d+)\)/i);
-    
-    if (!matches) {
-      return color;
-    }
-    
-    const r = parseInt(matches[1]);
-    const g = parseInt(matches[2]);
-    const b = parseInt(matches[3]);
-    
-    if (format === 'rgb') {
-      return color;
-    } else if (format === 'hex') {
-      return rgbToHex(r, g, b);
-    } else {
-      const { h, s, l } = rgbToHsl(r, g, b);
-      return `hsl(${h}, ${s}%, ${l}%)`;
-    }
-  }
-  
-  return color;
 }
 
 /**
@@ -227,15 +238,15 @@ export function isColorLight(color: string): boolean {
     g = parseInt(matches[2]);
     b = parseInt(matches[3]);
   } else if (color.startsWith('hsl')) {
-    const matches = color.match(/hsl\((\d+),\s*(\d+)%,\s*(\d+)%\)/i) || 
-                   color.match(/hsl\((\d+)\s+(\d+)%\s+(\d+)%\)/i);
+    const matches = color.match(/hsl\((\d+),\s*(\d+)%,\s*(\d+\.?\d*)%\)/i) || 
+                   color.match(/hsl\((\d+)\s+(\d+)%\s+(\d+\.?\d*)%\)/i);
     
     if (!matches) {
       return true;
     }
     
     // For HSL, we can just use the lightness value
-    const l = parseInt(matches[3]);
+    const l = parseFloat(matches[3]);
     return l > 50;
   } else {
     return true;
