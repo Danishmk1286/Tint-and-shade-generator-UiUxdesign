@@ -16,7 +16,7 @@ interface VariantSliderProps {
 const VariantSlider: React.FC<VariantSliderProps> = ({
   value,
   onChange,
-  max = 10,
+  max = 20,
   type,
   className,
 }) => {

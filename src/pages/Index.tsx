@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Toaster } from 'sonner';
@@ -9,7 +8,7 @@ import ColorDisplay from '@/components/ColorDisplay';
 import FAQSection from '@/components/FAQSection';
 import { Separator } from '@/components/ui/separator';
 
-const MAX_VARIANTS = 10;
+const MAX_VARIANTS = 20;
 
 const Index = () => {
   const [baseColor, setBaseColor] = useState('#3b82f6');
