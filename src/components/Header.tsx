@@ -1,30 +1,37 @@
+
 import React from 'react';
-import { motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
-import { Palette } from 'lucide-react';
-interface HeaderProps {
-  className?: string;
-}
-const Header: React.FC<HeaderProps> = ({
-  className
-}) => {
-  return <motion.header initial={{
-    opacity: 0,
-    y: -20
-  }} animate={{
-    opacity: 1,
-    y: 0
-  }} transition={{
-    duration: 0.5
-  }} className={cn('text-center space-y-2', className)}>
-      <div className="flex items-center justify-center gap-2">
-        <Palette className="w-8 h-8 text-primary" />
-        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight">Tint & Shades Generator</h1>
-      </div>
-      
-      <p className="text-muted-foreground max-w-xl mx-auto">
-        Create beautiful tints and shades from any color. Customize the number of variants and copy color codes with a single click.
+import { Link, useLocation } from 'react-router-dom';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+const Header = () => {
+  const location = useLocation();
+  const isHome = location.pathname === '/';
+  const isPaletteGenerator = location.pathname === '/palette-generator';
+  
+  return (
+    <header className="text-center space-y-6">
+      <Link to="/" className="inline-block">
+        <h1 className="text-3xl md:text-4xl font-bold tracking-tight">Color Tools</h1>
+      </Link>
+      <p className="text-muted-foreground max-w-2xl mx-auto">
+        Create beautiful, accessible color palettes and variations for your design projects
       </p>
-    </motion.header>;
+      
+      <Tabs 
+        value={isHome ? 'tints' : (isPaletteGenerator ? 'palettes' : 'tints')}
+        className="w-full max-w-md mx-auto"
+      >
+        <TabsList className="grid grid-cols-2 w-full">
+          <TabsTrigger value="tints" asChild>
+            <Link to="/">Tint & Shade Generator</Link>
+          </TabsTrigger>
+          <TabsTrigger value="palettes" asChild>
+            <Link to="/palette-generator">Color Palette Generator</Link>
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>
+    </header>
+  );
 };
+
 export default Header;
