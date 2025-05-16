@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { motion } from 'framer-motion';
 import { Toaster } from 'sonner';
 import Header from '@/components/Header';
@@ -79,99 +78,80 @@ const PaletteGenerator = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="bg-card rounded-xl shadow-sm border p-6"
           >
-            <Tabs defaultValue="input" className="w-full">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="input">Color Palette Generator</TabsTrigger>
-                <TabsTrigger value="tints">Tint & Shade Generator</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="input" className="py-4">
-                {currentView === 'input' && (
-                  <div className="space-y-6">
-                    <div>
-                      <h2 className="text-2xl font-bold mb-4">Brand Colors</h2>
-                      <p className="text-muted-foreground mb-6">
-                        Enter up to 3 brand colors to generate harmonious palette suggestions.
-                      </p>
-                      
-                      <div className="space-y-4">
-                        {brandColors.map((color, index) => (
-                          <ColorPickerMultiple
-                            key={index}
-                            color={color}
-                            onChange={(color) => handleUpdateColor(index, color)}
-                            onRemove={() => handleRemoveColor(index)}
-                            canRemove={brandColors.length > 1}
-                            index={index}
-                          />
-                        ))}
-                        
-                        {brandColors.length < 3 && (
-                          <Button 
-                            onClick={handleAddColor}
-                            variant="outline"
-                            className="mt-2"
-                          >
-                            Add Another Color
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                    
-                    <Button 
-                      onClick={handleGeneratePalettes}
-                      className="w-full"
-                      disabled={isGenerating}
-                    >
-                      {isGenerating ? 'Generating...' : 'Generate Palettes'}
-                    </Button>
-                  </div>
-                )}
-                
-                {currentView === 'grid' && (
-                  <div className="space-y-6">
-                    <div className="flex items-center justify-between">
-                      <h2 className="text-2xl font-bold">AI Generated Palettes</h2>
-                      <Button 
-                        variant="outline" 
-                        onClick={handleBack}
-                      >
-                        Back to Colors
-                      </Button>
-                    </div>
-                    <PaletteGrid 
-                      palettes={palettes} 
-                      onSelectPalette={handleSelectPalette} 
-                    />
-                  </div>
-                )}
-                
-                {currentView === 'details' && selectedPalette && (
-                  <div className="space-y-6">
-                    <div className="flex items-center justify-between">
-                      <h2 className="text-2xl font-bold">Palette Details</h2>
-                      <Button 
-                        variant="outline" 
-                        onClick={handleBack}
-                      >
-                        Back to Palettes
-                      </Button>
-                    </div>
-                    <PaletteDetails palette={selectedPalette} />
-                  </div>
-                )}
-              </TabsContent>
-              
-              <TabsContent value="tints" className="py-4">
-                <div className="flex items-center justify-center h-64">
-                  <p className="text-center text-muted-foreground">
-                    Switch to the "Color Palette Generator" tab to use the AI palette generator.
-                    <br />
-                    Or navigate to the home page for the Tint & Shade Generator.
+            {currentView === 'input' && (
+              <div className="space-y-6">
+                <div>
+                  <h2 className="text-2xl font-bold mb-4">Brand Colors</h2>
+                  <p className="text-muted-foreground mb-6">
+                    Enter up to 3 brand colors to generate harmonious palette suggestions.
                   </p>
+                  
+                  <div className="space-y-4">
+                    {brandColors.map((color, index) => (
+                      <ColorPickerMultiple
+                        key={index}
+                        color={color}
+                        onChange={(color) => handleUpdateColor(index, color)}
+                        onRemove={() => handleRemoveColor(index)}
+                        canRemove={brandColors.length > 1}
+                        index={index}
+                      />
+                    ))}
+                    
+                    {brandColors.length < 3 && (
+                      <Button 
+                        onClick={handleAddColor}
+                        variant="outline"
+                        className="mt-2"
+                      >
+                        Add Another Color
+                      </Button>
+                    )}
+                  </div>
                 </div>
-              </TabsContent>
-            </Tabs>
+                
+                <Button 
+                  onClick={handleGeneratePalettes}
+                  className="w-full"
+                  disabled={isGenerating}
+                >
+                  {isGenerating ? 'Generating...' : 'Generate Palettes'}
+                </Button>
+              </div>
+            )}
+            
+            {currentView === 'grid' && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-2xl font-bold">AI Generated Palettes</h2>
+                  <Button 
+                    variant="outline" 
+                    onClick={handleBack}
+                  >
+                    Back to Colors
+                  </Button>
+                </div>
+                <PaletteGrid 
+                  palettes={palettes} 
+                  onSelectPalette={handleSelectPalette} 
+                />
+              </div>
+            )}
+            
+            {currentView === 'details' && selectedPalette && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-2xl font-bold">Palette Details</h2>
+                  <Button 
+                    variant="outline" 
+                    onClick={handleBack}
+                  >
+                    Back to Palettes
+                  </Button>
+                </div>
+                <PaletteDetails palette={selectedPalette} />
+              </div>
+            )}
           </motion.section>
         </main>
       </div>
