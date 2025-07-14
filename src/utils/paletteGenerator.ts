@@ -98,55 +98,91 @@ const hslToRgb = (h: number, s: number, l: number): { r: number; g: number; b: n
   };
 };
 
-// Generate a color with specific relationship to the base color
-const generateRelatedColor = (
-  baseColor: string, 
-  relationshipType: 'analogous' | 'complementary' | 'monochromatic' | 'triadic' | 'tetradic' | 'split-complementary',
-  index: number
-): string => {
+// Color harmony algorithms based on color theory
+const generateColorHarmony = (
+  baseColor: string,
+  harmonyType: 'complementary' | 'analogous' | 'triadic' | 'split-complementary' | 'square' | 'monochromatic'
+): string[] => {
   const { r, g, b } = hexToRgb(baseColor);
   const { h, s, l } = rgbToHsl(r, g, b);
   
-  let newH = h;
-  let newS = s;
-  let newL = l;
+  const colors: string[] = [baseColor]; // Start with base color
   
-  switch (relationshipType) {
-    case 'analogous':
-      // Analogous colors are next to each other on the color wheel
-      newH = (h + (30 * (index % 2 === 0 ? 1 : -1) * Math.floor((index + 1) / 2))) % 360;
-      break;
-      
+  switch (harmonyType) {
     case 'complementary':
-      // Complementary colors are opposite on the color wheel
-      newH = (h + 180) % 360;
+      // Add complementary color (180° opposite)
+      colors.push(generateColorFromHsl((h + 180) % 360, s, l));
+      // Add variations with different lightness/saturation for depth
+      colors.push(generateColorFromHsl((h + 180) % 360, Math.max(20, s - 20), Math.min(80, l + 15)));
+      colors.push(generateColorFromHsl(h, Math.max(20, s - 15), Math.max(20, l - 25)));
       break;
       
-    case 'monochromatic':
-      // Monochromatic colors vary in saturation and lightness
-      newS = Math.min(100, Math.max(20, s + (index * 15 * (index % 2 === 0 ? 1 : -1))));
-      newL = Math.min(85, Math.max(25, l + (index * 10 * (index % 2 === 0 ? 1 : -1))));
+    case 'analogous':
+      // Add adjacent colors (±30°, ±60°)
+      colors.push(generateColorFromHsl((h + 30) % 360, s, l));
+      colors.push(generateColorFromHsl((h - 30 + 360) % 360, s, l));
+      colors.push(generateColorFromHsl((h + 60) % 360, Math.max(20, s - 10), Math.min(80, l + 10)));
+      colors.push(generateColorFromHsl((h - 60 + 360) % 360, Math.max(20, s - 10), Math.max(30, l - 15)));
       break;
       
     case 'triadic':
-      // Triadic colors are evenly spaced on the color wheel
-      newH = (h + (120 * index)) % 360;
-      break;
-      
-    case 'tetradic':
-      // Tetradic colors form a rectangle on the color wheel
-      newH = (h + (90 * index)) % 360;
+      // Add colors at 120° intervals
+      colors.push(generateColorFromHsl((h + 120) % 360, s, l));
+      colors.push(generateColorFromHsl((h + 240) % 360, s, l));
+      // Add variations for depth
+      colors.push(generateColorFromHsl((h + 120) % 360, Math.max(20, s - 15), Math.min(80, l + 10)));
+      colors.push(generateColorFromHsl((h + 240) % 360, Math.max(20, s - 15), Math.max(25, l - 20)));
       break;
       
     case 'split-complementary':
-      // Split complementary uses the two colors adjacent to the complement
-      newH = (h + 180 + (30 * (index % 2 === 0 ? 1 : -1) * Math.floor((index + 1) / 2))) % 360;
+      // Add colors adjacent to complement (150°, 210°)
+      colors.push(generateColorFromHsl((h + 150) % 360, s, l));
+      colors.push(generateColorFromHsl((h + 210) % 360, s, l));
+      colors.push(generateColorFromHsl((h + 150) % 360, Math.max(20, s - 10), Math.min(80, l + 15)));
+      colors.push(generateColorFromHsl((h + 210) % 360, Math.max(20, s - 10), Math.max(30, l - 10)));
+      break;
+      
+    case 'square':
+      // Add colors at 90° intervals (square/tetradic)
+      colors.push(generateColorFromHsl((h + 90) % 360, s, l));
+      colors.push(generateColorFromHsl((h + 180) % 360, s, l));
+      colors.push(generateColorFromHsl((h + 270) % 360, s, l));
+      // Add a variation for the 5th color
+      colors.push(generateColorFromHsl((h + 45) % 360, Math.max(20, s - 20), Math.min(80, l + 20)));
+      break;
+      
+    case 'monochromatic':
+      // Vary saturation and lightness while keeping hue constant
+      colors.push(generateColorFromHsl(h, Math.max(20, s - 30), Math.min(85, l + 25)));
+      colors.push(generateColorFromHsl(h, Math.min(100, s + 20), Math.max(20, l - 30)));
+      colors.push(generateColorFromHsl(h, Math.max(10, s - 50), Math.min(90, l + 40)));
+      colors.push(generateColorFromHsl(h, Math.min(80, s + 10), Math.max(15, l - 45)));
       break;
   }
   
-  // Convert back to RGB
-  const { r: newR, g: newG, b: newB } = hslToRgb(newH / 360, newS / 100, newL / 100);
-  return rgbToHex(newR, newG, newB);
+  return colors.slice(0, 6); // Return up to 6 colors per harmony
+};
+
+// Helper function to generate color from HSL values
+const generateColorFromHsl = (h: number, s: number, l: number): string => {
+  // Ensure values are within valid ranges
+  h = h % 360;
+  s = Math.max(0, Math.min(100, s));
+  l = Math.max(0, Math.min(100, l));
+  
+  const { r, g, b } = hslToRgb(h / 360, s / 100, l / 100);
+  return rgbToHex(r, g, b);
+};
+
+// Filter color combinations through WCAG contrast requirements
+const filterByAccessibility = (colors: string[], referenceColors: string[] = ['#ffffff', '#000000']): string[] => {
+  return colors.filter(color => {
+    // Check if color has sufficient contrast with at least one reference color
+    return referenceColors.some(refColor => {
+      const contrast = calculateContrastRatio(color, refColor);
+      return contrast >= 3.0; // Minimum for UI elements
+    });
+  });
 };
 
 // Generate a palette based on color theory and color relationships
@@ -156,24 +192,28 @@ const generatePaletteSet = (brandColors: string[], index: number): Palette => {
   const { r, g, b } = hexToRgb(primaryColor);
   const { h, s, l } = rgbToHsl(r, g, b);
   
-  // Define color relationship patterns for different palettes
-  const colorPatterns = [
-    'analogous',
+  // Define color harmony types for different palettes
+  const harmonyTypes: Array<'complementary' | 'analogous' | 'triadic' | 'split-complementary' | 'square' | 'monochromatic'> = [
     'complementary',
-    'monochromatic',
+    'analogous', 
     'triadic',
-    'tetradic',
-    'split-complementary'
+    'split-complementary',
+    'square',
+    'monochromatic'
   ];
   
-  // Rotate through different color patterns
-  const pattern = colorPatterns[index % colorPatterns.length];
+  // Select harmony type based on index
+  const harmonyType = harmonyTypes[index % harmonyTypes.length];
   
-  // Generate secondary color based on the pattern
-  const secondaryHex = generateRelatedColor(primaryColor, pattern as any, 1);
+  // Generate harmonious colors using color theory
+  const harmonyColors = generateColorHarmony(primaryColor, harmonyType);
   
-  // Generate accent color based on the pattern
-  const accentHex = generateRelatedColor(primaryColor, pattern as any, 2);
+  // Filter colors for accessibility before selecting secondary/accent
+  const accessibleColors = filterByAccessibility(harmonyColors.slice(1), ['#ffffff', '#f8f9fa', '#212529']);
+  
+  // Select secondary and accent from the accessible harmonious colors
+  const secondaryHex = accessibleColors[0] || harmonyColors[1];
+  const accentHex = accessibleColors[1] || harmonyColors[2];
   
   // Generate neutral colors
   // Light neutral - high lightness, low saturation
@@ -316,9 +356,9 @@ const generatePaletteSet = (brandColors: string[], index: number): Palette => {
       isColorBlindFriendly: isColorBlindFriendly(primary.hex, secondary.hex, accent.hex),
     },
     reasoning: {
-      brandGoals: generateBrandGoalsExplanation(pattern, primary.hex, secondary.hex, accent.hex),
+      brandGoals: generateBrandGoalsExplanation(harmonyType, primary.hex, secondary.hex, accent.hex),
       accessibilityReasoning: generateAccessibilityExplanation(whiteOnPrimary, blackOnPrimary, whiteOnSecondary, blackOnSecondary, whiteOnAccent, blackOnAccent, primaryOnNeutral),
-      harmonyExplanation: generateHarmonyExplanation(pattern, primary.hex, secondary.hex, accent.hex),
+      harmonyExplanation: generateHarmonyExplanation(harmonyType, primary.hex, secondary.hex, accent.hex),
     }
   };
 };
@@ -459,18 +499,26 @@ const getColorMeaning = (hex: string, role: string, hue: number): string => {
   }
 };
 
-// Generate brand goals explanation
-const generateBrandGoalsExplanation = (pattern: string, primary: string, secondary: string, accent: string): string => {
+// Generate brand goals explanation with detailed color theory reasoning
+const generateBrandGoalsExplanation = (harmonyType: string, primary: string, secondary: string, accent: string): string => {
+  const primaryRgb = hexToRgb(primary);
+  const { h: primaryHue } = rgbToHsl(primaryRgb.r, primaryRgb.g, primaryRgb.b);
+  
   const explanations: Record<string, string> = {
-    'analogous': "This palette uses closely related colors to create a harmonious, cohesive look that conveys professionalism and clarity. The subtle color variations maintain brand consistency while providing enough contrast for visual hierarchy.",
-    'complementary': "This palette leverages opposing colors for maximum contrast and visual impact. The complementary relationship creates energy and vibrancy while maintaining a balanced visual identity.",
-    'monochromatic': "This refined palette uses variations of a single color to create a sophisticated, cohesive look. The monochromatic approach ensures brand consistency while subtle variations provide necessary contrast for UI elements.",
-    'triadic': "This balanced palette uses three evenly-spaced colors for a vibrant yet harmonious look. The triadic relationship creates visual interest and energy while maintaining color harmony.",
-    'tetradic': "This dynamic palette offers rich color variety with two complementary pairs. The tetradic relationship provides maximum flexibility for complex interfaces while maintaining color harmony.",
-    'split-complementary': "This nuanced palette balances vibrancy with harmony by pairing a base color with two adjacent complementary colors. This approach creates visual interest while avoiding the tension of direct complementary colors."
+    complementary: `This complementary palette uses colors opposite on the color wheel (${Math.round(primaryHue)}° and ${Math.round((primaryHue + 180) % 360)}°) to create maximum visual impact and energy. The high contrast naturally draws attention and creates a dynamic, confident brand presence. Perfect for brands wanting to stand out in competitive markets and convey boldness and innovation.`,
+    
+    analogous: `This analogous palette uses neighboring colors (${Math.round(primaryHue - 30)}°-${Math.round(primaryHue + 30)}°) to create natural harmony and visual flow. The gentle transitions between hues evoke feelings of calm, reliability, and sophisticated elegance. Ideal for brands focused on trust, stability, and creating a premium, cohesive experience.`,
+    
+    triadic: `This triadic palette uses three colors evenly spaced (${Math.round(primaryHue)}°, ${Math.round((primaryHue + 120) % 360)}°, ${Math.round((primaryHue + 240) % 360)}°) on the color wheel, creating vibrant diversity while maintaining perfect balance. This approach signals creativity, innovation, and versatility - perfect for brands that want to appear forward-thinking and dynamic while remaining approachable.`,
+    
+    'split-complementary': `This split-complementary palette combines your primary color with two colors adjacent to its complement (${Math.round((primaryHue + 150) % 360)}° and ${Math.round((primaryHue + 210) % 360)}°), offering strong contrast with more subtle sophistication than pure complementary schemes. This creates visual interest without tension, perfect for brands balancing professionalism with approachability.`,
+    
+    square: `This square (tetradic) palette uses four colors evenly distributed around the color wheel, offering maximum variety while maintaining harmonic balance. The rich color possibilities allow for complex visual hierarchies and diverse applications, ideal for brands with multiple product lines or services that need versatile yet cohesive identity systems.`,
+    
+    monochromatic: `This monochromatic palette explores the full range of your chosen hue through variations in saturation and lightness. This approach creates sophisticated unity and timeless elegance, allowing subtle distinctions while maintaining strong brand recognition. Perfect for luxury brands or those wanting to convey expertise, precision, and refined taste.`
   };
   
-  return explanations[pattern] || "This palette balances visual harmony with functional contrast, creating a cohesive brand identity while ensuring usability across different interface elements.";
+  return explanations[harmonyType] || "This scientifically-crafted palette balances color theory principles with practical usability, ensuring your brand communicates effectively while maintaining visual harmony across all applications.";
 };
 
 // Generate accessibility explanation
@@ -500,18 +548,30 @@ const generateAccessibilityExplanation = (
   }
 };
 
-// Generate harmony explanation
-const generateHarmonyExplanation = (pattern: string, primary: string, secondary: string, accent: string): string => {
+// Generate detailed harmony explanation with color theory insights
+const generateHarmonyExplanation = (harmonyType: string, primary: string, secondary: string, accent: string): string => {
+  const primaryRgb = hexToRgb(primary);
+  const { h: primaryHue, s: primarySat, l: primaryLight } = rgbToHsl(primaryRgb.r, primaryRgb.g, primaryRgb.b);
+  const secondaryRgb = hexToRgb(secondary);
+  const { h: secondaryHue, s: secondarySat, l: secondaryLight } = rgbToHsl(secondaryRgb.r, secondaryRgb.g, secondaryRgb.b);
+  const accentRgb = hexToRgb(accent);
+  const { h: accentHue, s: accentSat, l: accentLight } = rgbToHsl(accentRgb.r, accentRgb.g, accentRgb.b);
+  
   const explanations: Record<string, string> = {
-    'analogous': "This palette uses analogous colors that sit next to each other on the color wheel, creating a serene and comfortable design that works harmoniously together. The primary color establishes the theme, while the secondary and accent provide subtle variation without competing for attention.",
-    'complementary': "This palette leverages complementary colors from opposite sides of the color wheel, creating a vibrant look with maximum contrast. The primary and secondary colors balance each other perfectly, while the accent adds dimension and emphasis for important elements.",
-    'monochromatic': "This palette explores variations in saturation and brightness of a single color, creating an elegant, unified look with perfect harmony. The variations provide enough contrast for visual hierarchy while maintaining absolute color cohesion.",
-    'triadic': "This palette uses three colors equally spaced around the color wheel, creating a vibrant look even when using softer colors. This provides rich contrast while maintaining balance, allowing for versatile application across different interface elements.",
-    'tetradic': "This palette uses a rectangle on the color wheel, incorporating four colors with good contrast. This rich palette offers maximum versatility for complex interfaces while the shared undertones maintain harmony across the different hues.",
-    'split-complementary': "This palette uses a base color with two colors adjacent to its complement, creating visual interest and contrast while being more sophisticated than a direct complementary scheme. This balanced approach ensures harmony while providing good variation for different UI elements."
+    complementary: `This complementary harmony positions colors exactly ${Math.round(Math.abs(primaryHue - secondaryHue))}° apart on the color wheel, creating maximum chromatic contrast. The opposing hues naturally create visual tension that energizes the design while the variations in saturation (${Math.round(primarySat)}% vs ${Math.round(secondarySat)}%) and lightness (${Math.round(primaryLight)}% vs ${Math.round(secondaryLight)}%) add subtle depth and hierarchy.`,
+    
+    analogous: `This analogous harmony uses colors within a ${Math.round(Math.max(Math.abs(primaryHue - secondaryHue), Math.abs(primaryHue - accentHue)))}° range on the color wheel, creating natural visual flow. The gentle hue transitions (${Math.round(primaryHue)}° → ${Math.round(secondaryHue)}° → ${Math.round(accentHue)}°) combined with strategic lightness variations (${Math.round(primaryLight)}%, ${Math.round(secondaryLight)}%, ${Math.round(accentLight)}%) create depth without discord.`,
+    
+    triadic: `This triadic harmony achieves perfect geometric balance with colors spaced approximately 120° apart (${Math.round(primaryHue)}°, ${Math.round(secondaryHue)}°, ${Math.round(accentHue)}°). The equal spacing ensures no single color dominates while varied saturation levels (${Math.round(primarySat)}%, ${Math.round(secondarySat)}%, ${Math.round(accentSat)}%) create visual hierarchy and prevent the palette from feeling overly vibrant.`,
+    
+    'split-complementary': `This split-complementary harmony takes your primary hue (${Math.round(primaryHue)}°) and pairs it with colors adjacent to its complement (${Math.round(secondaryHue)}° and ${Math.round(accentHue)}°), creating strong contrast with reduced tension. The strategic lightness distribution (${Math.round(primaryLight)}%, ${Math.round(secondaryLight)}%, ${Math.round(accentLight)}%) ensures readability while maintaining visual impact.`,
+    
+    square: `This square harmony creates perfect balance using four colors evenly distributed around the color wheel. The 90° intervals (${Math.round(primaryHue)}°, ${Math.round(secondaryHue)}°, etc.) provide maximum color diversity while the complementary pairs within the square ensure harmonious relationships. Varied saturation levels prevent overwhelming vibrancy.`,
+    
+    monochromatic: `This monochromatic harmony explores the full potential of the ${Math.round(primaryHue)}° hue through strategic saturation (${Math.round(primarySat)}%, ${Math.round(secondarySat)}%, ${Math.round(accentSat)}%) and lightness variations (${Math.round(primaryLight)}%, ${Math.round(secondaryLight)}%, ${Math.round(accentLight)}%). This creates sophisticated depth and hierarchy without chromatic discord, perfect for conveying refinement and brand consistency.`
   };
   
-  return explanations[pattern] || "This palette creates a balanced visual rhythm through strategic color relationships. The colors work together cohesively while maintaining enough contrast to create clear visual hierarchy.";
+  return explanations[harmonyType] || "This color harmony follows established color theory principles, using mathematical relationships on the color wheel combined with strategic saturation and lightness adjustments to create both visual appeal and functional usability.";
 };
 
 // Main function to generate palettes
