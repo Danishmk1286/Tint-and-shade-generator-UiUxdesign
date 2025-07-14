@@ -19,86 +19,81 @@ const FAQSection: React.FC = () => {
       <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
       
       <Accordion type="single" collapsible className="space-y-4">
-        <AccordionItem value="what-are-tints">
+        <AccordionItem value="what-is-color-tint">
           <AccordionTrigger className="text-left font-medium text-lg">
-            What are tints?
+            What is a color tint?
           </AccordionTrigger>
           <AccordionContent className="text-muted-foreground">
             <p>
-              Tints are lighter variations of a base color, created by mixing the original color with white. 
-              Each tint maintains the same hue as the original color but has increased lightness. 
-              Tints are often perceived as softer and more gentle versions of the base color.
+              A tint is created by adding white to a pure color, making it lighter while maintaining the original hue. 
+              Tints are perfect for creating softer, more subtle color variations in your designs. They're essential 
+              for creating accessible color schemes and establishing visual hierarchy.
             </p>
           </AccordionContent>
         </AccordionItem>
         
-        <AccordionItem value="tint-use-cases">
+        <AccordionItem value="how-designers-use-shades">
           <AccordionTrigger className="text-left font-medium text-lg">
-            Where are tints used?
-          </AccordionTrigger>
-          <AccordionContent className="text-muted-foreground">
-            <p className="mb-2">
-              Tints have many applications in design and digital products:
-            </p>
-            <ul className="list-disc pl-5 space-y-1">
-              <li>Creating lighter background variants while maintaining brand colors</li>
-              <li>Designing accessible hover and active states for buttons and interactive elements</li>
-              <li>Building color hierarchies for information visualization</li>
-              <li>Establishing a cohesive UI color system with consistent variations</li>
-              <li>Creating gradients and subtle color transitions</li>
-              <li>Designing form fields, cards, and secondary UI components</li>
-            </ul>
-          </AccordionContent>
-        </AccordionItem>
-        
-        <AccordionItem value="what-are-shades">
-          <AccordionTrigger className="text-left font-medium text-lg">
-            What are shades?
+            How do designers use color shades?
           </AccordionTrigger>
           <AccordionContent className="text-muted-foreground">
             <p>
-              Shades are darker variations of a base color, created by mixing the original color with black.
-              Like tints, shades maintain the same hue as the base color but have decreased lightness.
-              Shades are generally perceived as stronger, more intense, and more dramatic than the original color.
+              Shades are created by adding black to a color, making it darker. Designers use shades to create depth, 
+              contrast, and visual hierarchy in their work. They're essential for hover states, shadows, and creating 
+              sophisticated color schemes that maintain brand consistency while offering functional variety.
             </p>
           </AccordionContent>
         </AccordionItem>
         
-        <AccordionItem value="shade-use-cases">
+        <AccordionItem value="hex-rgb-support">
           <AccordionTrigger className="text-left font-medium text-lg">
-            Where are shades used?
+            Can I use this tool for HEX and RGB values?
           </AccordionTrigger>
           <AccordionContent className="text-muted-foreground">
-            <p className="mb-2">
-              Shades are valuable across many design contexts:
+            <p>
+              Yes! Our tool accepts HEX color codes and provides a visual color picker. All generated tints and shades 
+              are provided in HEX format, making them perfect for web development, CSS, and design software. You can 
+              easily copy any color code by clicking on it.
             </p>
-            <ul className="list-disc pl-5 space-y-1">
-              <li>Creating darker text that maintains brand color identity while ensuring readability</li>
-              <li>Designing active or pressed states for buttons and interactive elements</li>
-              <li>Adding depth and dimension to UI elements through shadows and layering</li>
-              <li>Creating visual emphasis for important elements or calls to action</li>
-              <li>Establishing visual contrast between different sections of a design</li>
-              <li>Designing footer backgrounds, borders, and dividers</li>
-            </ul>
           </AccordionContent>
         </AccordionItem>
         
-        <AccordionItem value="color-terminology">
+        <AccordionItem value="copy-colors">
           <AccordionTrigger className="text-left font-medium text-lg">
-            Understanding color terminology
+            How do I copy a color?
           </AccordionTrigger>
           <AccordionContent className="text-muted-foreground">
-            <p className="mb-2">
-              When working with colors, it's helpful to understand these basic terms:
+            <p>
+              Simply click on any color in the generated palette. The HEX code will be automatically copied to your 
+              clipboard and you'll see a confirmation message. You can also hover over colors to see their values 
+              in different formats (HEX, RGB, HSL).
             </p>
-            <ul className="list-disc pl-5 space-y-1">
-              <li><strong>Hue:</strong> The pure color itself (red, yellow, green, etc.)</li>
-              <li><strong>Saturation:</strong> The intensity or purity of a color (vibrant vs. muted)</li>
-              <li><strong>Lightness/Value:</strong> How light or dark a color is</li>
-              <li><strong>Tint:</strong> A color mixed with white, increasing lightness</li>
-              <li><strong>Shade:</strong> A color mixed with black, decreasing lightness</li>
-              <li><strong>Tone:</strong> A color mixed with gray, reducing saturation</li>
-            </ul>
+          </AccordionContent>
+        </AccordionItem>
+        
+        <AccordionItem value="accessibility-web-design">
+          <AccordionTrigger className="text-left font-medium text-lg">
+            Are these colors accessible for web design?
+          </AccordionTrigger>
+          <AccordionContent className="text-muted-foreground">
+            <p>
+              Our tool generates color variations that help you create accessible designs. When using tints and shades, 
+              always test contrast ratios between text and backgrounds to ensure WCAG compliance. Lighter tints work 
+              well for backgrounds, while darker shades provide good contrast for text and important UI elements.
+            </p>
+          </AccordionContent>
+        </AccordionItem>
+        
+        <AccordionItem value="commercial-use">
+          <AccordionTrigger className="text-left font-medium text-lg">
+            Can I use these colors for commercial projects?
+          </AccordionTrigger>
+          <AccordionContent className="text-muted-foreground">
+            <p>
+              Yes! All colors generated by this tool are free to use for any purpose, including commercial projects. 
+              The tool itself is free and open-source. Whether you're working on websites, mobile apps, branding, 
+              or print design, you can use these color variations without any restrictions.
+            </p>
           </AccordionContent>
         </AccordionItem>
       </Accordion>
