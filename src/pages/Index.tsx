@@ -91,14 +91,22 @@ const Index = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.6 }}
-          className="text-center text-sm text-muted-foreground pt-6 border-t"
+          className="text-center text-sm text-muted-foreground pt-6 border-t space-y-3"
         >
-          <p>
-            Hover on any color to see the code format, click to copy to clipboard.
-          </p>
-          <p className="mt-1">
-            Use the format buttons to switch between HEX, RGB, and HSL display modes.
-          </p>
+          <div>
+            <p>
+              Hover on any color to see the code format, click to copy to clipboard.
+            </p>
+            <p className="mt-1">
+              Use the format buttons to switch between HEX, RGB, and HSL display modes.
+            </p>
+          </div>
+          <div className="pt-4 border-t">
+            <p>&copy; 2024 Shade Tint Genie. All rights reserved.</p>
+            <p className="mt-1">
+              Created by <a href="http://linkedin.com/danishmk286" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Danish Khan</a>
+            </p>
+          </div>
         </motion.footer>
       </div>
     </div>
