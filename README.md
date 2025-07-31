@@ -1,51 +1,56 @@
-# Welcome to your Lovable project
+# 🎨 Tint and Shade Generator – UI/UX Design Tool
 
-## Project info
+![Repo Size](https://img.shields.io/github/repo-size/Danishmk1286/tint-tool)
+![Stars](https://img.shields.io/github/stars/Danishmk1286/tint-tool?style=social)
+![License](https://img.shields.io/github/license/Danishmk1286/tint-tool)
 
-**Use your preferred IDE**
+A sleek and intuitive web tool for generating color tints and shades, built with **React**, **Vite**, and **TypeScript**. Designed to help designers and developers quickly visualize and extract harmonious color variations for their UI/UX projects.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+---
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 🚀 Live Demo
 
-Follow these steps:
+🔗 **[Try it here](https://danishmk1286.github.io/tint-tool)**
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL> # i.e git clone https://github.com/Danishmk1286/black-and-white-logo-maker.git
+---
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME> # i.e cd My_first_project
+## 🖼️ Preview
 
-# Step 3: Install the necessary dependencies.
-npm i # If you get this error "packages are looking for funding. run `npm fund` for details." => Solution: Type => npm config set fund=false --location=global
+> <img width="1177" height="1177" alt="image" src="https://github.com/user-attachments/assets/c11fe83b-bc9e-4f40-b054-52ec4ad521b9" />
+> Example:  
+> ![Tool Preview] (https://github.com/Danishmk1286/tint-tool/blob/main/preview.png?raw=true)
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+---
+
+## ✨ Features
+
+- 🎨 Generate multiple tints and shades from a base color
+- ⚡ Instant preview with smooth transitions
+- 📱 Responsive design for desktop and mobile
+- 🧠 Built with modern tools: React + Vite + TypeScript
+- 🔧 Modular architecture for easy customization
+
+---
+
+## 🛠️ Tech Stack
+
+| Tool            | Purpose                          |
+|-----------------|----------------------------------|
+| React           | UI rendering                     |
+| Vite            | Fast build and dev environment   |
+| TypeScript      | Type safety and scalability      |
+| ShadCN UI       | Accessible and elegant components|
+| React Router    | Page routing                     |
+| TanStack Query  | Data management                  |
+
+---
+
+## 📦 Installation
+
+Clone the repository and install dependencies:
+
+```bash
+git clone https://github.com/Danishmk1286/tint-tool.git
+cd tint-tool
+npm install
 npm run dev
-
-# In all the process make sure you are inside the main directory folder
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
