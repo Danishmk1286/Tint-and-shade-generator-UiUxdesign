@@ -1,8 +1,9 @@
 # 🎨 Tint and Shade Generator – UI/UX Design Tool
 
-![Repo Size](https://img.shields.io/github/repo-size/Danishmk1286/tint-tool)
-![Stars](https://img.shields.io/github/stars/Danishmk1286/tint-tool?style=social)
-![License](https://img.shields.io/github/license/Danishmk1286/tint-tool)
+![Repo Size](https://img.shields.io/github/repo-size/Danishmk1286/Tint-and-shade-generator-UiUxdesign)
+![Stars](https://img.shields.io/github/stars/Danishmk1286/Tint-and-shade-generator-UiUxdesign?style=social)
+![License](https://img.shields.io/github/license/Danishmk1286/Tint-and-shade-generator-UiUxdesign)
+
 
 A sleek and intuitive web tool for generating color tints and shades, built with **React**, **Vite**, and **TypeScript**. Designed to help designers and developers quickly visualize and extract harmonious color variations for their UI/UX projects.
 
