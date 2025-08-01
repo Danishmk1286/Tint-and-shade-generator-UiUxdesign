@@ -97,7 +97,7 @@ const Index = () => {
           <div className="pt-4 border-t">
             <p>&copy; 2024 Shade Tint Genie. All rights reserved.</p>
             <p className="mt-1">
-              Created by <a href="http://linkedin.com/danishmk286" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Danish Khan</a>
+              Created by <a href="http://linkedin.com/danishmk1286" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Danish Khan</a>
             </p>
           </div>
         </motion.footer>
