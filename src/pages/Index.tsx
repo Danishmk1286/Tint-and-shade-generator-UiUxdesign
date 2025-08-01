@@ -23,13 +23,7 @@ const Index = () => {
         <Header />
         
         <main className="space-y-16">
-          <article className="text-center space-y-4 max-w-4xl mx-auto">
-            <p className="text-muted-foreground">
-              Easily create color tints and shades for web design, UI mockups, branding palettes and more. 
-              Our tool supports HEX and RGB values, making it perfect for designers and developers who need 
-              accessible color variations.
-            </p>
-          </article>
+         
           
           <motion.section
             initial={{ opacity: 0, y: 20 }}
