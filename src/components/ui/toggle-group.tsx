@@ -33,7 +33,9 @@ ToggleGroup.displayName = ToggleGroupPrimitive.Root.displayName
 const ToggleGroupItem = React.forwardRef<
   React.ElementRef<typeof ToggleGroupPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof ToggleGroupPrimitive.Item> &
-    VariantProps<typeof toggleVariants>
+    VariantProps<typeof toggleVariants> & {
+      "aria-label"?: string
+    }
 >(({ className, children, variant, size, ...props }, ref) => {
   const context = React.useContext(ToggleGroupContext)
 
@@ -47,12 +49,26 @@ const ToggleGroupItem = React.forwardRef<
         }),
         className
       )}
+      // Accessibility additions
+      role="button"
+      tabIndex={0}
+      aria-label={props["aria-label"] || "Toggle option"}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault()
+          props.onClick?.(e as unknown as React.MouseEvent)
+        }
+      }}
       {...props}
     >
       {children}
     </ToggleGroupPrimitive.Item>
   )
 })
+
+ToggleGroupItem.displayName = ToggleGroupPrimitive.Item.displayName
+
+export { ToggleGroup, ToggleGroupItem }
 
 ToggleGroupItem.displayName = ToggleGroupPrimitive.Item.displayName
 
