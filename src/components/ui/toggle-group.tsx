@@ -39,6 +39,9 @@ const ToggleGroupItem = React.forwardRef<
 >(({ className, children, variant, size, ...props }, ref) => {
   const context = React.useContext(ToggleGroupContext)
 
+  // Check if the toggle is selected via Radix's data-state
+  const isChecked = props["data-state"] === "on"
+
   return (
     <ToggleGroupPrimitive.Item
       ref={ref}
@@ -49,10 +52,10 @@ const ToggleGroupItem = React.forwardRef<
         }),
         className
       )}
-      // Accessibility additions
-      role="button"
-      tabIndex={0}
+      role="switch"
       aria-label={props["aria-label"] || "Toggle option"}
+      aria-checked={isChecked}
+      tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault()
@@ -70,6 +73,3 @@ ToggleGroupItem.displayName = ToggleGroupPrimitive.Item.displayName
 
 export { ToggleGroup, ToggleGroupItem }
 
-ToggleGroupItem.displayName = ToggleGroupPrimitive.Item.displayName
-
-export { ToggleGroup, ToggleGroupItem }
