@@ -52,6 +52,6 @@ Clone the repository and install dependencies:
 
 ```bash
 git clone https://github.com/Danishmk1286/tint-shade-palette-generator
-cd tint-tool
+cd tint-shade-palette-generator
 npm install
 npm run dev
