@@ -51,7 +51,7 @@ A sleek and intuitive web tool for generating color tints and shades, built with
 Clone the repository and install dependencies:
 
 ```bash
-git clone https://github.com/Danishmk1286/tint-tool.git
+git clone https://github.com/Danishmk1286/tint-shade-palette-generator
 cd tint-tool
 npm install
 npm run dev
