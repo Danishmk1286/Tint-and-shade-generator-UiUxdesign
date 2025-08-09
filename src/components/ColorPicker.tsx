@@ -91,21 +91,22 @@ const ColorPicker: React.FC<ColorPickerProps> = ({
                 aria-label="Color picker"
               />
             </div>
+           
             <Input
-              ref={inputRef}
-              id="color-picker"
-              type="text"
-              defaultValue={color}
-              onChange={handleInputChange}
-              onBlur={(e) => {
-                const normalizedColor = normalizeColor(e.target.value);
-                e.target.value = normalizedColor;
-                onChange(normalizedColor);
-              }}
-              className="w-32 h-10 font-mono"
-              placeholder="#RRGGBB"
-              aria-label="Color hex code"
-            />
+  ref={inputRef}
+  id="color-picker"
+  type="text"
+  value={color}
+  onChange={handleInputChange}
+  onBlur={(e) => {
+    const normalizedColor = normalizeColor(e.target.value);
+    onChange(normalizedColor);
+  }}
+  className="w-32 h-10 font-mono"
+  placeholder="#RRGGBB"
+  aria-label="Color hex code"
+/>
+
           </div>
         </div>
       </div>
